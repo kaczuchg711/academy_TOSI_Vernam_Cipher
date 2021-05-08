@@ -65,7 +65,7 @@ int main() {
     ifstream MyReadFile("..\\" + nameOfFile);
 
     string line;
-    string text;
+    string characterAsBits;
     string fullText;
     string key;
     string fullKey;
@@ -80,16 +80,17 @@ int main() {
     while (getline(MyReadFile, line)) {
         fullText.append(line);
         for (char ch:line) {
-            text = change_Character_to_bits_string(ch);
+            characterAsBits = change_Character_to_bits_string(ch);
             key = toBinary((rand() % 128 + 128));
             fullKey.append(key);
-            ciphertext = code(text, key);
+            ciphertext = code(characterAsBits, key);
             fullCiphertext.append(ciphertext);
         }
     }
 
 //  deszyfrowanie
-    for (int i = 0; i < fullCiphertext.length(); i += 8) {
+    int i;
+    for (i = 0; i < fullCiphertext.length(); i += 8) {
         textAfterDecode = decode(fullCiphertext.substr(i, 8), fullKey.substr(i, 8));
         fulltextAfterDecode += bitsToChar(textAfterDecode);
     }
@@ -99,7 +100,4 @@ int main() {
     cout << "Time taken by program: " << duration.count() << " s" << endl;
 
     test(fulltextAfterDecode, fullText);
-
-
-
 }
